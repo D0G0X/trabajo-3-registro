@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario para Cliente</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #010a14;
+            margin: 0;
+            padding: 0;
+            color: white;
+        }
+
+        .contenedor {
+            width: 400px;
+            margin: 50px auto;
+            background-color: #1b334d;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        h2, h3 {
+            text-align: center;
+            color: #d7dbdf;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 15px;
+        }
+
+        input {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #0052a3;
+        }
+
+        #listaClientes {
+            margin-top: 20px;
+        }
+
+        .cliente {
+            background-color: #2c4a68;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="contenedor">
+    <h2>Formulario para Cliente</h2>
+    <h3>Por favor, ingrese sus datos:</h3>
+
+    <form id="formularioCliente">
+        <label for="cedula">Cédula:</label>
+        <input type="tel" id="cedula" name="cedula" required>
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" id="correo" name="correo" required>
+
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" required>
+
+        <label for="fecha">Fecha de nacimiento:</label>
+        <input type="date" id="fecha" name="fecha" required>
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <div id="listaClientes">
+        <h3>Clientes Registrados:</h3>
+    </div>
+</div>
+
+<script>
+    const formulario = document.getElementById('formularioCliente');
+    const lista = document.getElementById('listaClientes');
+
+    const clientes = [];
+
+    formulario.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const cedula = document.getElementById('cedula').value.trim();
+    const nombre = document.getElementById('nombre').value.trim();
+    const correo = document.getElementById('correo').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const fecha = document.getElementById('fecha').value;
+
+    if (cedula.length !== 10 || !/^\d+$/.test(cedula)) {
+        alert("La cédula debe tener exactamente 10 números.");
+        return;
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(nombre)) {
+        alert("El nombre solo debe contener letras.");
+        return;
+    }
+
+    if (!correo.includes('@') || !correo.includes('.')) {
+        alert("El correo no es válido.");
+        return;
+    }
+
+    if (!/^\d{7,15}$/.test(telefono)) {
+        alert("El teléfono debe tener entre 7 y 15 dígitos.");
+        return;
+    }
+
+    const hoy = new Date();
+    const fechaNacimiento = new Date(fecha);
+    if (fechaNacimiento >= hoy) {
+        alert("La fecha de nacimiento no puede ser futura.");
+        return;
+    }
+
+
+    const cliente = { cedula, nombre, correo, telefono, fecha };
+    clientes.push(cliente);
+
+    mostrarClientes();
+    formulario.reset();
+});
+
+    function mostrarClientes() {
+        const contenedor = document.createElement('div');
+        contenedor.innerHTML = '';
+
+        lista.innerHTML = '<h3>Clientes Registrados:</h3>';
+
+        clientes.forEach(c => {
+            const div = document.createElement('div');
+            div.className = 'cliente';
+            div.innerHTML = `
+                <strong>Cédula:</strong> ${c.cedula}<br>
+                <strong>Nombre:</strong> ${c.nombre}<br>
+                <strong>Correo:</strong> ${c.correo}<br>
+                <strong>Teléfono:</strong> ${c.telefono}<br>
+                <strong>Fecha Nacimiento:</strong> ${c.fecha}
+            `;
+            lista.appendChild(div);
+        });
+    }
+</script>
+
+</body>
+</html>
