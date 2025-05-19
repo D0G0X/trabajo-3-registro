@@ -113,27 +113,27 @@
     const correo = document.getElementById('correo').value.trim();
     const telefono = document.getElementById('telefono').value.trim();
     const fecha = document.getElementById('fecha').value;
-
+//si la cedula tiene caracteres raros o execede el numero de caracteres se invalida
     if (cedula.length !== 10 || !/^\d+$/.test(cedula)) {
-        alert("La cédula debe tener exactamente 10 números.");
+        alert("La cédula ivalidad.");
         return;
     }
-
+//si el nombre contiene otro tipo de caracteres se invalida
     if (!/^[a-zA-Z\s]+$/.test(nombre)) {
         alert("El nombre solo debe contener letras.");
         return;
     }
-
-    if (!correo.includes('@') || !correo.includes('.')) {
+//si el correo no termina en  ".com" se invalida
+    if (!correo.includes('@') || !correo.includes('.com')) {
         alert("El correo no es válido.");
         return;
     }
-
+//si el numero de caracteres sobre pasa se invalida
     if (!/^\d{7,15}$/.test(telefono)) {
         alert("El teléfono debe tener entre 7 y 15 dígitos.");
         return;
     }
-
+//si la fecha pasa el limite del dia actual se invalida
     const hoy = new Date();
     const fechaNacimiento = new Date(fecha);
     if (fechaNacimiento >= hoy) {
